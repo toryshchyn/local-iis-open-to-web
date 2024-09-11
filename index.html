@@ -9,8 +9,38 @@
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
             background-color: #f4f4f4;
+        }
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 1140px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 960px;
+            }
+        }
+        @media (max-width: 992px) {
+            .container {
+                max-width: 720px;
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                max-width: 540px;
+            }
+        }
+        @media (max-width: 576px) {
+            .container {
+                max-width: 100%;
+                padding: 15px;
+            }
         }
         h1, h2, h3 {
             color: #333;
@@ -38,62 +68,64 @@
     </style>
 </head>
 <body>
-    <h1>Short Instructions to Host a Site Locally on IIS and Make it Public with ngrok</h1>
+    <div class="container">
+        <h1>Short Instructions to Host a Site Locally on IIS and Make it Public with ngrok</h1>
 
-    <h2>1. Install IIS and Required Features</h2>
-    <p>Go to <strong>Control Panel</strong> → <strong>Programs and Features</strong> → <strong>Turn Windows features on or off</strong>.<br>
-    Ensure the following are installed under <strong>Internet Information Services (IIS)</strong>:</p>
-    <ul>
-        <li>Web Server (IIS)</li>
-        <li>ASP.NET 4.8 (under Application Development Features)</li>
-        <li>.NET Extensibility 4.8</li>
-        <li>ISAPI Extensions</li>
-        <li>Request Filtering (under Security)</li>
-        <li>Static Content and HTTP Errors (under Common HTTP Features)</li>
-    </ul>
+        <h2>1. Install IIS and Required Features</h2>
+        <p>Go to <strong>Control Panel</strong> → <strong>Programs and Features</strong> → <strong>Turn Windows features on or off</strong>.<br>
+        Ensure the following are installed under <strong>Internet Information Services (IIS)</strong>:</p>
+        <ul>
+            <li>Web Server (IIS)</li>
+            <li>ASP.NET 4.8 (under Application Development Features)</li>
+            <li>.NET Extensibility 4.8</li>
+            <li>ISAPI Extensions</li>
+            <li>Request Filtering (under Security)</li>
+            <li>Static Content and HTTP Errors (under Common HTTP Features)</li>
+        </ul>
 
-    <h2>2. Re-register ASP.NET if IIS Was Installed After .NET</h2>
-    <p>Open a command prompt as <strong>Administrator</strong> and run the following commands:</p>
-    <pre class="bash">
+        <h2>2. Re-register ASP.NET if IIS Was Installed After .NET</h2>
+        <p>Open a command prompt as <strong>Administrator</strong> and run the following commands:</p>
+        <pre class="bash">
 cd %windir%\Microsoft.NET\Framework64\v4.0.30319
 aspnet_regiis.exe -i
-    </pre>
-    <p>For 32-bit systems, use <code>Framework</code> instead of <code>Framework64</code>.</p>
-    <p>Then, restart IIS:</p>
-    <pre class="bash">
+        </pre>
+        <p>For 32-bit systems, use <code>Framework</code> instead of <code>Framework64</code>.</p>
+        <p>Then, restart IIS:</p>
+        <pre class="bash">
 iisreset
-    </pre>
+        </pre>
 
-    <h2>3. Create and Configure the Site in IIS</h2>
-    <p>Open <strong>IIS Manager</strong> and:</p>
-    <ul>
-        <li>Right-click <strong>Sites</strong> → <strong>Add Website</strong>.</li>
-        <li>Set <strong>Site name</strong> and <strong>Physical path</strong>.</li>
-        <li>Set <strong>IP Address</strong> to <code>All Unassigned</code> and <strong>Port</strong> to <code>8100</code> (HTTP) and <code>8200</code> (HTTPS).</li>
-    </ul>
-    <p>Ensure the <strong>Application Pool</strong> has:</p>
-    <ul>
-        <li><strong>.NET CLR Version</strong> set to <code>v4.0.30319</code></li>
-        <li><strong>Managed Pipeline Mode</strong> set to <strong>Integrated</strong></li>
-    </ul>
-    <p>Apply the settings and start the site.</p>
+        <h2>3. Create and Configure the Site in IIS</h2>
+        <p>Open <strong>IIS Manager</strong> and:</p>
+        <ul>
+            <li>Right-click <strong>Sites</strong> → <strong>Add Website</strong>.</li>
+            <li>Set <strong>Site name</strong> and <strong>Physical path</strong>.</li>
+            <li>Set <strong>IP Address</strong> to <code>All Unassigned</code> and <strong>Port</strong> to <code>8100</code> (HTTP) and <code>8200</code> (HTTPS).</li>
+        </ul>
+        <p>Ensure the <strong>Application Pool</strong> has:</p>
+        <ul>
+            <li><strong>.NET CLR Version</strong> set to <code>v4.0.30319</code></li>
+            <li><strong>Managed Pipeline Mode</strong> set to <strong>Integrated</strong></li>
+        </ul>
+        <p>Apply the settings and start the site.</p>
 
-    <h2>4. Install and Run ngrok</h2>
-    <p>Download and install <strong>ngrok</strong> from <a href="https://ngrok.com/">ngrok.com</a>.</p>
-    <p>Run your IIS site locally, and in a terminal run:</p>
-    <pre class="bash">
+        <h2>4. Install and Run ngrok</h2>
+        <p>Download and install <strong>ngrok</strong> from <a href="https://ngrok.com/">ngrok.com</a>.</p>
+        <p>Run your IIS site locally, and in a terminal run:</p>
+        <pre class="bash">
 ngrok http 8100
-    </pre>
-    <p>For HTTPS, run:</p>
-    <pre class="bash">
+        </pre>
+        <p>For HTTPS, run:</p>
+        <pre class="bash">
 ngrok http https://localhost:8200
-    </pre>
-    <p>Copy the public URL provided by ngrok and share it for external access.</p>
+        </pre>
+        <p>Copy the public URL provided by ngrok and share it for external access.</p>
 
-    <h2>5. Fixing Common Issues</h2>
-    <ul>
-        <li><strong>500.21 - Internal Server Error (ExtensionlessUrlHandler)</strong>: Ensure ASP.NET 4.x is registered in IIS (see step 2).</li>
-        <li><strong>Application Pool .NET Version</strong>: Ensure the application pool is using <code>.NET CLR 4.0</code> and <strong>Integrated</strong> pipeline mode.</li>
-    </ul>
+        <h2>5. Fixing Common Issues</h2>
+        <ul>
+            <li><strong>500.21 - Internal Server Error (ExtensionlessUrlHandler)</strong>: Ensure ASP.NET 4.x is registered in IIS (see step 2).</li>
+            <li><strong>Application Pool .NET Version</strong>: Ensure the application pool is using <code>.NET CLR 4.0</code> and <strong>Integrated</strong> pipeline mode.</li>
+        </ul>
+    </div>
 </body>
 </html>
